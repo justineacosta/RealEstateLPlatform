@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     "rent apartment",
   ],
   authors: [{ name: "EstatePrime" }],
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "EstatePrime — Premium Real Estate Platform",
     description:
