@@ -40,18 +40,17 @@ const milestones = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative py-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=80"
-            alt="About hero"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 bg-slate-900/80" />
+      <section className="relative pt-48 pb-28 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=80"
+          alt="About hero"
+          fill
+          className="object-cover opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/50 to-slate-900/80" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

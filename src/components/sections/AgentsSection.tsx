@@ -49,7 +49,7 @@ export default function AgentsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
+              className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
             >
               {/* Image */}
               <div className="relative h-64 overflow-hidden">
@@ -96,7 +96,7 @@ export default function AgentsSection() {
               </div>
 
               {/* Info */}
-              <div className="p-5">
+              <div className="p-5 flex flex-col flex-1">
                 <h3 className="font-bold text-slate-900 text-lg leading-snug mb-0.5">
                   {agent.name}
                 </h3>
@@ -115,20 +115,32 @@ export default function AgentsSection() {
                 </div>
 
                 {/* Specialties */}
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                  {agent.specialties.slice(0, 2).map((s) => (
-                    <span
-                      key={s}
-                      className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full font-medium"
-                    >
-                      {s}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-1.5 mt-4">
+                  <span className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full font-medium">
+                    {agent.specialties[0]}
+                  </span>
+                  {agent.specialties.length > 1 && (
+                    <div className="relative group/tooltip">
+                      <span className="cursor-default text-xs bg-slate-100 text-slate-500 border border-slate-200 px-2.5 py-1 rounded-full font-medium hover:bg-gold-50 hover:text-gold-700 hover:border-gold-200 transition-colors duration-200">
+                        +{agent.specialties.length - 1}
+                      </span>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:flex flex-col gap-1.5 bg-white border border-gray-200 rounded-xl shadow-lg p-2.5 z-10 min-w-max">
+                        {agent.specialties.slice(1).map((s) => (
+                          <span
+                            key={s}
+                            className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full font-medium"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <Link
                   href={`/agents/${agent.id}`}
-                  className="block mt-4 text-center py-2.5 border-2 border-dashed border-gray-200 rounded-xl text-sm font-semibold text-slate-600 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50 transition-all duration-200"
+                  className="block mt-auto pt-4 text-center py-2.5 border-2 border-dashed border-gray-200 rounded-xl text-sm font-semibold text-slate-600 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50 transition-all duration-200"
                 >
                   View Profile
                 </Link>

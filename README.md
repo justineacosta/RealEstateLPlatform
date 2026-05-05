@@ -17,9 +17,25 @@ Deploy to Vercel in one click:
 - **Homepage** — Animated hero with background image cycling, floating stat cards, inline search with buy/rent tabs, and popular city quick links
 - **Property Listings** — Filterable and sortable grid/list view with multi-dimension filters (status, type, city, price range, bedrooms)
 - **Property Detail** — Full-screen image gallery, stats overview, features checklist, sticky agent contact sidebar, related properties
-- **Agents Directory** — Team grid with hover-reveal contact actions and key performance stats
+- **Agents Directory** — Team grid with hover-reveal contact actions, key performance stats, and specialty badge tooltip
 - **About Page** — Company story, core values grid, and alternating timeline
 - **Contact Page** — Validated contact form with topic select and success confirmation state
+
+---
+
+## Recent UI Improvements
+
+### Property Cards
+- **Equal-height cards** — All cards in a grid row share the same height; the "View" button is always pinned to the bottom via `flex-col` + `mt-auto`
+- **Swipeable image slider** — Images can be dragged/swiped (Framer Motion `drag="x"`) or navigated with ‹ › arrow buttons and dot indicators; arrows are always visible on mobile, hover-only on desktop; counter shows `1/3` style
+
+### Agent Cards (Home section & `/agents` page)
+- **Equal-height cards** — Same `flex-col` / `mt-auto` treatment so "View Profile" buttons align across all cards
+- **Specialty badge limit** — Shows exactly 1 specialty badge; remaining specialties are hidden behind a hoverable `+N` pill that opens a centered tooltip
+
+### Navigation & Page Layout
+- **Transparent navbar on sub-pages** — Removed the `pt-20` wrapper offset from all sub-pages (`/agents`, `/about`, `/contact`, `/properties`, `/properties/[id]`) so the fixed navbar overlays each page's dark hero section, matching the homepage behaviour
+- **Hero background images** — All sub-pages now display a visible background image (30 % opacity with dark gradient overlay) in their hero/header sections; previously Agents and Properties had plain gradient backgrounds
 
 ---
 

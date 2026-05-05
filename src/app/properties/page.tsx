@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -106,10 +107,18 @@ export default function PropertiesPage() {
     cityFilter !== "all" || minPrice || maxPrice || bedsFilter !== "all";
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen bg-gray-50">
       {/* Page Header */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-36 pb-16 overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80"
+          alt="Properties hero"
+          fill
+          className="object-cover opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/50 to-slate-900/80" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

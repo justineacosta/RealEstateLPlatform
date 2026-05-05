@@ -9,10 +9,18 @@ import { agents } from "@/lib/data";
 
 export default function AgentsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-40 pb-20 overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80"
+          alt="Agents hero"
+          fill
+          className="object-cover opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/50 to-slate-900/80" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -63,7 +71,7 @@ export default function AgentsPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
+              className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
             >
               <div className="relative h-72">
                 <Image
@@ -107,7 +115,7 @@ export default function AgentsPage() {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-1">
                 <h3 className="text-xl font-bold text-slate-900 mb-0.5">{agent.name}</h3>
                 <p className="text-gold-600 text-sm font-medium mb-3">{agent.title}</p>
                 <p className="text-slate-500 text-sm leading-relaxed mb-4 line-clamp-3">
@@ -129,18 +137,30 @@ export default function AgentsPage() {
                 </div>
 
                 {/* Specialties */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {agent.specialties.map((s) => (
-                    <span
-                      key={s}
-                      className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full"
-                    >
-                      {s}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-1.5 mb-4">
+                  <span className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full">
+                    {agent.specialties[0]}
+                  </span>
+                  {agent.specialties.length > 1 && (
+                    <div className="relative group/tooltip">
+                      <span className="cursor-default text-xs bg-slate-100 text-slate-500 border border-slate-200 px-2.5 py-1 rounded-full font-medium hover:bg-gold-50 hover:text-gold-700 hover:border-gold-200 transition-colors duration-200">
+                        +{agent.specialties.length - 1}
+                      </span>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:flex flex-col gap-1.5 bg-white border border-gray-200 rounded-xl shadow-lg p-2.5 z-10 min-w-max">
+                        {agent.specialties.slice(1).map((s) => (
+                          <span
+                            key={s}
+                            className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full font-medium"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <Link href={`/agents/${agent.id}`}>
+                <Link href={`/agents/${agent.id}`} className="mt-auto">
                   <Button variant="outline" className="w-full rounded-xl gap-2">
                     View Profile
                     <ArrowRight className="w-4 h-4" />

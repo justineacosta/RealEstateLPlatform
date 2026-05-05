@@ -15,6 +15,8 @@ import {
   Share2,
   ArrowUpRight,
   Camera,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,21 +52,66 @@ export default function PropertyCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className={cn("group", className)}
+      className={cn("group h-full", className)}
     >
-      <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-card-hover transition-all duration-500 border border-gray-100 hover:border-gold-200 hover:-translate-y-1">
+      <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-card-hover transition-all duration-500 border border-gray-100 hover:border-gold-200 hover:-translate-y-1">
         {/* Image */}
         <div className="relative overflow-hidden aspect-[4/3]">
-          <Image
-            src={property.images[imageIndex]}
-            alt={property.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
+          {/* Slide strip */}
+          <motion.div
+            className="flex h-full"
+            animate={{ x: `-${imageIndex * 100}%` }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.1}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -50 && imageIndex < property.images.length - 1)
+                setImageIndex(imageIndex + 1);
+              else if (info.offset.x > 50 && imageIndex > 0)
+                setImageIndex(imageIndex - 1);
+            }}
+          >
+            {property.images.map((src, i) => (
+              <div key={i} className="relative flex-shrink-0 w-full h-full">
+                <Image
+                  src={src}
+                  alt={`${property.title} ${i + 1}`}
+                  fill
+                  className="object-cover pointer-events-none"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  draggable={false}
+                />
+              </div>
+            ))}
+          </motion.div>
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+          {/* Prev / Next arrows */}
+          {property.images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.preventDefault(); setImageIndex(prev => Math.max(prev - 1, 0)); }}
+                className={cn(
+                  "absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-black/60",
+                  imageIndex === 0 ? "opacity-0 pointer-events-none" : "opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                )}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={(e) => { e.preventDefault(); setImageIndex(prev => Math.min(prev + 1, property.images.length - 1)); }}
+                className={cn(
+                  "absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm text-white rounded-full flex items-center justify-center transition-all duration-200 hover:bg-black/60",
+                  imageIndex === property.images.length - 1 ? "opacity-0 pointer-events-none" : "opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                )}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </>
+          )}
 
           {/* Top badges */}
           <div className="absolute top-3 left-3 flex gap-2">
@@ -96,33 +143,31 @@ export default function PropertyCard({
             </button>
           </div>
 
-          {/* Image count */}
+          {/* Dot indicators */}
           {property.images.length > 1 && (
-            <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/50 backdrop-blur-sm text-white text-xs px-2.5 py-1.5 rounded-lg">
-              <Camera className="w-3 h-3" />
-              {property.images.length}
-            </div>
-          )}
-
-          {/* Thumbnail dots */}
-          {property.images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
               {property.images.map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => setImageIndex(i)}
+                  onClick={(e) => { e.preventDefault(); setImageIndex(i); }}
                   className={cn(
-                    "w-1.5 h-1.5 rounded-full transition-all duration-200",
-                    i === imageIndex ? "bg-white w-4" : "bg-white/50"
+                    "h-1.5 rounded-full transition-all duration-200",
+                    i === imageIndex ? "bg-white w-4" : "bg-white/50 w-1.5"
                   )}
                 />
               ))}
             </div>
           )}
+
+          {/* Image count */}
+          <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/50 backdrop-blur-sm text-white text-xs px-2.5 py-1.5 rounded-lg">
+            <Camera className="w-3 h-3" />
+            {imageIndex + 1}/{property.images.length}
+          </div>
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-5 flex flex-col flex-1">
           {/* Price & Rating */}
           <div className="flex items-start justify-between mb-3">
             <div>
@@ -189,7 +234,7 @@ export default function PropertyCard({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-auto">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Image
