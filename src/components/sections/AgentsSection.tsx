@@ -49,18 +49,18 @@ export default function AgentsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
+              className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:border-gold-200 hover:shadow-card-hover transition-all duration-500 hover:-translate-y-1"
             >
               {/* Image */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-72 overflow-hidden">
                 <Image
                   src={agent.avatar}
                   alt={agent.name}
                   fill
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
 
                 {/* Rating badge */}
                 <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3 py-1.5 rounded-full text-sm">
@@ -80,14 +80,14 @@ export default function AgentsSection() {
                 <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                   <a
                     href={`tel:${agent.phone}`}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-white/20 backdrop-blur-sm border border-white/30 text-white py-2 rounded-xl text-xs font-medium hover:bg-gold-500 hover:border-gold-500 transition-colors duration-200"
+                    className="flex-1 flex items-center justify-center gap-1.5 bg-white/20 backdrop-blur-sm border border-white/30 text-white py-2 rounded-xl text-xs font-medium hover:bg-gold-500 hover:border-gold-500 transition-all"
                   >
                     <Phone className="w-3.5 h-3.5" />
                     Call
                   </a>
                   <a
                     href={`mailto:${agent.email}`}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-white/20 backdrop-blur-sm border border-white/30 text-white py-2 rounded-xl text-xs font-medium hover:bg-gold-500 hover:border-gold-500 transition-colors duration-200"
+                    className="flex-1 flex items-center justify-center gap-1.5 bg-white/20 backdrop-blur-sm border border-white/30 text-white py-2 rounded-xl text-xs font-medium hover:bg-gold-500 hover:border-gold-500 transition-all"
                   >
                     <Mail className="w-3.5 h-3.5" />
                     Email
@@ -96,26 +96,29 @@ export default function AgentsSection() {
               </div>
 
               {/* Info */}
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="font-bold text-slate-900 text-lg leading-snug mb-0.5">
-                  {agent.name}
-                </h3>
-                <p className="text-gold-600 text-sm font-medium mb-4">{agent.title}</p>
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-xl font-bold text-slate-900 mb-0.5">{agent.name}</h3>
+                <p className="text-gold-600 text-sm font-medium mb-3">{agent.title}</p>
+                <p className="text-slate-500 text-sm leading-relaxed mb-4 line-clamp-3">
+                  {agent.bio}
+                </p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-dashed border-gray-200">
-                  <div className="text-center">
-                    <div className="text-xl font-black text-slate-900">{agent.totalSales}</div>
-                    <div className="text-xs text-slate-500">Sales</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-black text-slate-900">{agent.experience}yr</div>
-                    <div className="text-xs text-slate-500">Experience</div>
-                  </div>
+                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-dashed border-gray-200 mb-4">
+                  {[
+                    { label: "Sales", value: agent.totalSales },
+                    { label: "Listings", value: agent.totalListings },
+                    { label: "Years", value: agent.experience },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="text-center">
+                      <div className="text-lg font-black text-slate-900">{value}</div>
+                      <div className="text-xs text-slate-400">{label}</div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Specialties */}
-                <div className="flex items-center gap-1.5 mt-4">
+                <div className="flex items-center gap-1.5 mb-4">
                   <span className="text-xs bg-gold-50 text-gold-700 border border-gold-200 px-2.5 py-1 rounded-full font-medium">
                     {agent.specialties[0]}
                   </span>
@@ -138,11 +141,11 @@ export default function AgentsSection() {
                   )}
                 </div>
 
-                <Link
-                  href={`/agents/${agent.id}`}
-                  className="block mt-auto pt-4 text-center py-2.5 border-2 border-dashed border-gray-200 rounded-xl text-sm font-semibold text-slate-600 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50 transition-all duration-200"
-                >
-                  View Profile
+                <Link href={`/agents/${agent.id}`} className="mt-auto">
+                  <Button variant="outline" className="w-full rounded-xl gap-2">
+                    View Profile
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </Link>
               </div>
             </motion.div>
